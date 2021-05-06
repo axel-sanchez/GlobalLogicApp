@@ -15,6 +15,7 @@ import com.example.globallogicapp.databinding.FragmentProductBinding
 import com.example.globallogicapp.domain.usecase.GetProductsUseCase
 import com.example.globallogicapp.helpers.Either
 import com.example.globallogicapp.helpers.hide
+import com.example.globallogicapp.helpers.show
 import com.example.globallogicapp.ui.adapters.ProductAdapter
 import com.example.globallogicapp.viewmodel.ProductViewModel
 import org.koin.android.ext.android.inject
@@ -32,11 +33,7 @@ class ProductFragment : Fragment() {
     private var fragmentProductBinding: FragmentProductBinding? = null
     private val binding get() = fragmentProductBinding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         fragmentProductBinding = FragmentProductBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -52,11 +49,21 @@ class ProductFragment : Fragment() {
         viewModel.getProductLiveData().observe(viewLifecycleOwner, { response ->
             binding.progress.hide()
             if (response is Either.Right) {
-                // Set the adapter
-                with(binding.list) {
-                    layoutManager = LinearLayoutManager(context)
-                    adapter = ProductAdapter(response.r) { itemClick(it) }
+                if(response.r.isEmpty()){
+                    binding.list.hide()
+                    binding.errorText.text = getString(R.string.there_is_not_products)
+                    binding.emptyState.show()
+                } else{
+                    binding.list.show()
+                    with(binding.list) {
+                        layoutManager = LinearLayoutManager(context)
+                        adapter = ProductAdapter(response.r) { itemClick(it) }
+                    }
                 }
+            } else{
+                binding.emptyState.show()
+                binding.errorText.text = getString(R.string.error_api_products)
+                binding.list.hide()
             }
         })
     }

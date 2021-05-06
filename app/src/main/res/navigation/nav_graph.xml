@@ -21,6 +21,6 @@
         tools:layout="@layout/fragment_details" >
         <argument
             android:name="result"
-            app:argType="com.example.globallogicapp.data.Result" />
+            app:argType="com.example.globallogicapp.data.model.Result$ResultItem" />
     </fragment>
 </navigation>
