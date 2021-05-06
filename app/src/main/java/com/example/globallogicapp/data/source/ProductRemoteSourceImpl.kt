@@ -2,7 +2,7 @@ package com.example.globallogicapp.data.source
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.example.globallogicapp.data.Result
+import com.example.globallogicapp.data.model.Result
 import com.example.globallogicapp.data.service.ApiService
 import com.example.globallogicapp.helpers.Either
 

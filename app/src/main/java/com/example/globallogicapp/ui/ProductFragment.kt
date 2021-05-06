@@ -9,15 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.globallogicapp.R
-import com.example.globallogicapp.data.Result
-import com.example.globallogicapp.data.Result.*
+import com.example.globallogicapp.data.model.Result.*
 import com.example.globallogicapp.databinding.FragmentProductBinding
 import com.example.globallogicapp.domain.usecase.GetProductsUseCase
 import com.example.globallogicapp.helpers.Either
 import com.example.globallogicapp.helpers.hide
-import com.example.globallogicapp.helpers.show
 import com.example.globallogicapp.ui.adapters.ProductAdapter
 import com.example.globallogicapp.viewmodel.ProductViewModel
 import org.koin.android.ext.android.inject

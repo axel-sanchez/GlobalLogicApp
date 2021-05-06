@@ -1,4 +1,4 @@
-package com.example.globallogicapp.data
+package com.example.globallogicapp.data.model
 
 import android.os.Parcel
 import android.os.Parcelable

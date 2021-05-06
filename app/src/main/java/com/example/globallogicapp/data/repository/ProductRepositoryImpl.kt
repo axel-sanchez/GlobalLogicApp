@@ -1,6 +1,6 @@
 package com.example.globallogicapp.data.repository
 
-import com.example.globallogicapp.data.Result
+import com.example.globallogicapp.data.model.Result
 import com.example.globallogicapp.data.source.ApiError
 import com.example.globallogicapp.data.source.ProductRemoteSource
 import com.example.globallogicapp.domain.repository.ProductRepository

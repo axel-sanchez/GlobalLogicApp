@@ -1,10 +1,9 @@
 package com.example.globallogicapp.viewmodel
 
 import androidx.lifecycle.*
-import com.example.globallogicapp.data.Result
+import com.example.globallogicapp.data.model.Result
 import com.example.globallogicapp.data.source.ApiError
 import com.example.globallogicapp.domain.usecase.GetProductsUseCase
-import com.example.globallogicapp.domain.usecase.GetProductsUseCaseImpl
 import com.example.globallogicapp.helpers.Either
 import kotlinx.coroutines.launch
 

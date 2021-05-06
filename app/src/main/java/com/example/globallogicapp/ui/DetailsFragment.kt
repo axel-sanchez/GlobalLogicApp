@@ -6,8 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
-import com.example.globallogicapp.data.Result
-import com.example.globallogicapp.data.Result.*
+import com.example.globallogicapp.data.model.Result.*
 import com.example.globallogicapp.databinding.FragmentDetailsBinding
 import com.example.globallogicapp.ui.ProductFragment.Companion.RESULT_ITEM
 

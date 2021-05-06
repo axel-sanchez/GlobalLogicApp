@@ -8,8 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.globallogicapp.R
-import com.example.globallogicapp.data.Result
-import com.example.globallogicapp.data.Result.*
+import com.example.globallogicapp.data.model.Result
+import com.example.globallogicapp.data.model.Result.*
 
 /**
  * @author Axel Sanchez

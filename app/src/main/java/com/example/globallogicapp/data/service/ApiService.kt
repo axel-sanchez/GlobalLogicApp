@@ -1,6 +1,6 @@
 package com.example.globallogicapp.data.service
 
-import com.example.globallogicapp.data.Result
+import com.example.globallogicapp.data.model.Result
 import retrofit2.Response
 import retrofit2.http.GET
 
