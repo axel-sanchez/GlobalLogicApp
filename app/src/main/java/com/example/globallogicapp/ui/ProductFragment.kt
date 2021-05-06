@@ -1,62 +1,77 @@
 package com.example.globallogicapp.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.globallogicapp.R
-import com.example.globallogicapp.ui.dummy.DummyContent
+import com.example.globallogicapp.data.Result
+import com.example.globallogicapp.data.Result.*
+import com.example.globallogicapp.databinding.FragmentProductBinding
+import com.example.globallogicapp.domain.usecase.GetProductsUseCase
+import com.example.globallogicapp.helpers.Either
+import com.example.globallogicapp.helpers.hide
+import com.example.globallogicapp.helpers.show
+import com.example.globallogicapp.ui.adapters.ProductAdapter
+import com.example.globallogicapp.viewmodel.ProductViewModel
+import org.koin.android.ext.android.inject
 
 /**
  * A fragment representing a list of Items.
  */
 class ProductFragment : Fragment() {
 
-    private var columnCount = 1
+    private val getProductsUseCase: GetProductsUseCase by inject()
+    private val viewModel: ProductViewModel by viewModels(
+        factoryProducer = { ProductViewModel.ProductViewModelFactory(getProductsUseCase) }
+    )
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-        }
-    }
+    private var fragmentProductBinding: FragmentProductBinding? = null
+    private val binding get() = fragmentProductBinding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.item_product, container, false)
+    ): View {
+        fragmentProductBinding = FragmentProductBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        fragmentProductBinding = null
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.getProductLiveData().observe(viewLifecycleOwner, { response ->
+            binding.progress.hide()
+            if (response is Either.Right) {
+                // Set the adapter
+                with(binding.list) {
+                    layoutManager = LinearLayoutManager(context)
+                    adapter = ProductAdapter(response.r) { itemClick(it) }
                 }
-                adapter = ProductAdapter(DummyContent.ITEMS)
             }
-        }
-        return view
+        })
+    }
+
+    private fun itemClick(resultItem: ResultItem) {
+        val bundle = bundleOf(
+            RESULT_ITEM to resultItem
+        )
+        findNavController().navigate(R.id.action_productFragment_to_blankFragment, bundle)
     }
 
     companion object {
-
-        // TODO: Customize parameter argument names
-        const val ARG_COLUMN_COUNT = "column-count"
-
-        // TODO: Customize parameter initialization
-        @JvmStatic
-        fun newInstance(columnCount: Int) =
-            ProductFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_COLUMN_COUNT, columnCount)
-                }
-            }
+        const val RESULT_ITEM = "resultItem"
     }
 }
