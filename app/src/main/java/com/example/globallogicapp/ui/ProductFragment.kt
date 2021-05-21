@@ -47,23 +47,27 @@ class ProductFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.getProductLiveData().observe(viewLifecycleOwner, { response ->
-            binding.progress.hide()
-            if (response is Either.Right) {
-                if(response.r.isEmpty()){
-                    binding.list.hide()
-                    binding.errorText.text = getString(R.string.there_is_not_products)
-                    binding.emptyState.show()
-                } else{
-                    binding.list.show()
-                    with(binding.list) {
-                        layoutManager = LinearLayoutManager(context)
-                        adapter = ProductAdapter(response.r) { itemClick(it) }
+            with(binding) {
+                response.fold(
+                    left = {
+                        emptyState.show()
+                        errorText.text = getString(R.string.error_api_products)
+                        list.hide()
+                    }, right = {
+                        if ((response as Either.Right).r.isEmpty()) {
+                            list.hide()
+                            errorText.text = getString(R.string.there_is_not_products)
+                            emptyState.show()
+                        } else {
+                            list.show()
+                            with(list) {
+                                layoutManager = LinearLayoutManager(context)
+                                adapter = ProductAdapter(response.r) { itemClick(it) }
+                            }
+                        }
                     }
-                }
-            } else{
-                binding.emptyState.show()
-                binding.errorText.text = getString(R.string.error_api_products)
-                binding.list.hide()
+                )
+                progress.hide()
             }
         })
     }
