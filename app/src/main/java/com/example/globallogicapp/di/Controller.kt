@@ -7,6 +7,7 @@ import com.example.globallogicapp.data.source.ProductRemoteSourceImpl
 import com.example.globallogicapp.domain.repository.ProductRepository
 import com.example.globallogicapp.domain.usecase.GetProductsUseCase
 import com.example.globallogicapp.domain.usecase.GetProductsUseCaseImpl
+import com.example.globallogicapp.helpers.Constants.BASE_URL
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -14,8 +15,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 /**
  * @author Axel Sanchez
  */
-private const val BASE_URL = "http://private-f0eea-mobilegllatam.apiary-mock.com/"
-
 val moduleApp = module {
     single{
         Retrofit.Builder()
