@@ -1,6 +1,6 @@
 package com.example.globallogicapp.data.service
 
-import com.example.globallogicapp.data.model.Result
+import com.example.globallogicapp.data.model.Product
 import retrofit2.Response
 import retrofit2.http.GET
 
@@ -9,5 +9,5 @@ import retrofit2.http.GET
  */
 interface ApiServiceProduct{
     @GET("list")
-    suspend fun getProducts(): Response<Result?>
+    suspend fun getProducts(): Response<List<Product?>?>
 }

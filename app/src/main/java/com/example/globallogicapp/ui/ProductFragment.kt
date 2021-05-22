@@ -10,9 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.globallogicapp.R
-import com.example.globallogicapp.data.model.Result.*
+import com.example.globallogicapp.data.model.Product
 import com.example.globallogicapp.databinding.FragmentProductBinding
-import com.example.globallogicapp.domain.usecase.GetProductsUseCase
+import com.example.globallogicapp.domain.usecase.GetAllProductsUseCase
 import com.example.globallogicapp.helpers.Either
 import com.example.globallogicapp.helpers.hide
 import com.example.globallogicapp.helpers.show
@@ -25,9 +25,9 @@ import org.koin.android.ext.android.inject
  */
 class ProductFragment : Fragment() {
 
-    private val getProductsUseCase: GetProductsUseCase by inject()
+    private val getAllProductsUseCase: GetAllProductsUseCase by inject()
     private val viewModel: ProductViewModel by viewModels(
-        factoryProducer = { ProductViewModel.ProductViewModelFactory(getProductsUseCase) }
+        factoryProducer = { ProductViewModel.ProductViewModelFactory(getAllProductsUseCase) }
     )
 
     private var fragmentProductBinding: FragmentProductBinding? = null
@@ -62,7 +62,8 @@ class ProductFragment : Fragment() {
                             list.show()
                             with(list) {
                                 layoutManager = LinearLayoutManager(context)
-                                adapter = ProductAdapter(response.r) { itemClick(it) }
+                                val listProducts = response.r
+                                adapter = ProductAdapter(listProducts) { itemClick(it) }
                             }
                         }
                     }
@@ -72,14 +73,14 @@ class ProductFragment : Fragment() {
         })
     }
 
-    private fun itemClick(resultItem: ResultItem) {
+    private fun itemClick(product: Product?) {
         val bundle = bundleOf(
-            RESULT_ITEM to resultItem
+            ID_PRODUCT to product?.id
         )
         findNavController().navigate(R.id.action_productFragment_to_blankFragment, bundle)
     }
 
     companion object {
-        const val RESULT_ITEM = "resultItem"
+        const val ID_PRODUCT = "idProduct"
     }
 }

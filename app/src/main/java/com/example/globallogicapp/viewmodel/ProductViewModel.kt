@@ -1,8 +1,8 @@
 package com.example.globallogicapp.viewmodel
 
 import androidx.lifecycle.*
-import com.example.globallogicapp.data.model.Result
-import com.example.globallogicapp.domain.usecase.GetProductsUseCase
+import com.example.globallogicapp.data.model.Product
+import com.example.globallogicapp.domain.usecase.GetAllProductsUseCase
 import com.example.globallogicapp.helpers.Constants
 import com.example.globallogicapp.helpers.Either
 import kotlinx.coroutines.launch
@@ -10,31 +10,31 @@ import kotlinx.coroutines.launch
 /**
  * @author Axel Sanchez
  */
-class ProductViewModel(private val getProductsUseCase: GetProductsUseCase): ViewModel() {
+class ProductViewModel(private val getAllProductsUseCase: GetAllProductsUseCase): ViewModel() {
 
-    private val listData: MutableLiveData<Either<Constants.ApiError, Result>> by lazy {
-        MutableLiveData<Either<Constants.ApiError, Result>>().also {
+    private val listData: MutableLiveData<Either<Constants.ApiError, List<Product?>>> by lazy {
+        MutableLiveData<Either<Constants.ApiError, List<Product?>>>().also {
             getProduct()
         }
     }
 
-    private fun setListData(result: Either<Constants.ApiError, Result>) {
+    private fun setListData(result: Either<Constants.ApiError, List<Product?>>) {
         listData.postValue(result)
     }
 
     private fun getProduct() {
         viewModelScope.launch {
-            setListData(getProductsUseCase.call())
+            setListData(getAllProductsUseCase.call())
         }
     }
 
-    fun getProductLiveData(): LiveData<Either<Constants.ApiError, Result>> {
+    fun getProductLiveData(): LiveData<Either<Constants.ApiError, List<Product?>>> {
         return listData
     }
 
-    class ProductViewModelFactory(private val getProductsUseCase: GetProductsUseCase) : ViewModelProvider.Factory {
+    class ProductViewModelFactory(private val getAllProductsUseCase: GetAllProductsUseCase) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return modelClass.getConstructor(GetProductsUseCase::class.java).newInstance(getProductsUseCase)
+            return modelClass.getConstructor(GetAllProductsUseCase::class.java).newInstance(getAllProductsUseCase)
         }
     }
 }

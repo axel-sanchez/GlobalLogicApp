@@ -8,15 +8,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.globallogicapp.R
-import com.example.globallogicapp.data.model.Result
-import com.example.globallogicapp.data.model.Result.*
+import com.example.globallogicapp.data.model.Product
 
 /**
  * @author Axel Sanchez
  */
 class ProductAdapter(
-    private val values: Result,
-    private val itemClick: (ResultItem) -> Unit
+    private val values: List<Product?>,
+    private val itemClick: (Product?) -> Unit
 ) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -27,17 +26,23 @@ class ProductAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.title.text = item.title
 
-        Glide
-            .with(holder.itemView)
-            .load(item.image)
-            .centerCrop()
-            .into(holder.image)
+        item?.let { product ->
 
-        holder.description.text = item.description
+            with(holder){
+                title.text = product.title
 
-        holder.itemView.setOnClickListener { itemClick(item) }
+                Glide
+                    .with(itemView)
+                    .load(product.image)
+                    .centerCrop()
+                    .into(image)
+
+                description.text = product.description
+
+                itemView.setOnClickListener { itemClick(product) }
+            }
+        }
     }
 
     override fun getItemCount(): Int = values.size

@@ -1,19 +1,27 @@
 package com.example.globallogicapp.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
-import com.example.globallogicapp.data.model.Result.*
 import com.example.globallogicapp.databinding.FragmentDetailsBinding
-import com.example.globallogicapp.ui.ProductFragment.Companion.RESULT_ITEM
+import com.example.globallogicapp.domain.usecase.GetProductUseCase
+import com.example.globallogicapp.ui.ProductFragment.Companion.ID_PRODUCT
+import com.example.globallogicapp.viewmodel.DetailsViewModel
+import org.koin.android.ext.android.inject
 
 /**
  * @author Axel Sanchez
  */
 class DetailsFragment : Fragment() {
+
+    private val getProductUseCase: GetProductUseCase by inject()
+    private val viewModel: DetailsViewModel by viewModels(
+        factoryProducer = { DetailsViewModel.DetailsViewModelFactory(getProductUseCase) }
+    )
 
     private var fragmentDetailsBinding: FragmentDetailsBinding? = null
     private val binding get() = fragmentDetailsBinding!!
@@ -31,15 +39,25 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val resultItem = arguments?.getParcelable<ResultItem>(RESULT_ITEM)
+        val idProduct = arguments?.getLong(ID_PRODUCT)
 
-        binding.title.text = resultItem?.title
-        binding.description.text = resultItem?.description
+        idProduct?.let {
+            viewModel.getProduct(idProduct)
 
-        Glide
-            .with(view)
-            .load(resultItem?.image)
-            .centerCrop()
-            .into(binding.imageView)
+            viewModel.getProductLiveData().observe(viewLifecycleOwner, { product ->
+                with(binding){
+                    product?.let {
+                        title.text = it.title
+                        description.text = it.description
+
+                        Glide
+                            .with(view)
+                            .load(it.image)
+                            .centerCrop()
+                            .into(imageView)
+                    }
+                }
+            })
+        }
     }
 }

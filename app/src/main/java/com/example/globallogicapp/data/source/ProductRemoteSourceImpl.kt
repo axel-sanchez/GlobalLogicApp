@@ -2,22 +2,22 @@ package com.example.globallogicapp.data.source
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.example.globallogicapp.data.model.Result
+import com.example.globallogicapp.data.model.Product
 import com.example.globallogicapp.data.service.ApiServiceProduct
 import com.example.globallogicapp.helpers.Constants
-import com.example.globallogicapp.helpers.Constants.ApiError.*
+import com.example.globallogicapp.helpers.Constants.ApiError.API_ERROR
 import com.example.globallogicapp.helpers.Either
 
 /**
  * @author Axel Sanchez
  */
 interface ProductRemoteSource {
-    suspend fun getProducts(): MutableLiveData<Either<Constants.ApiError, Result>>
+    suspend fun getProducts(): MutableLiveData<Either<Constants.ApiError, List<Product?>>>
 }
 
 class ProductRemoteSourceImpl(private val service: ApiServiceProduct) : ProductRemoteSource {
-    override suspend fun getProducts(): MutableLiveData<Either<Constants.ApiError, Result>> {
-        val mutableLiveData = MutableLiveData<Either<Constants.ApiError, Result>>()
+    override suspend fun getProducts(): MutableLiveData<Either<Constants.ApiError, List<Product?>>> {
+        val mutableLiveData = MutableLiveData<Either<Constants.ApiError, List<Product?>>>()
 
         try {
             val response = service.getProducts()
