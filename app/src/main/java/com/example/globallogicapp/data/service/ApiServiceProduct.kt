@@ -7,7 +7,7 @@ import retrofit2.http.GET
 /**
  * @author Axel Sanchez
  */
-interface ApiService{
+interface ApiServiceProduct{
     @GET("list")
     suspend fun getProducts(): Response<Result?>
 }
