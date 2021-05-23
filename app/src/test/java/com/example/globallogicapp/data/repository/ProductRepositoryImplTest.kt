@@ -9,18 +9,16 @@ import com.example.globallogicapp.helpers.HelperTest.getListProducts
 import com.example.globallogicapp.helpers.HelperTest.product1
 import com.example.globallogicapp.helpers.HelperTest.product2
 import com.example.globallogicapp.helpers.HelperTest.product3
+import com.example.globallogicapp.helpers.HelperTest.product4
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.contains
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
 import org.mockito.BDDMockito.given
 import org.mockito.BDDMockito.never
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 
-@RunWith(JUnit4::class)
 class ProductRepositoryImplTest {
 
     private val productRemoteSource: ProductRemoteSource = mock(ProductRemoteSource::class.java)
@@ -38,9 +36,10 @@ class ProductRepositoryImplTest {
             given(productLocalSource.insertProducts(product1)).willReturn(1)
             given(productLocalSource.insertProducts(product2)).willReturn(2)
             given(productLocalSource.insertProducts(product3)).willReturn(3)
+            given(productLocalSource.insertProducts(product4)).willReturn(4)
 
             val result = productRepository.getAllProducts()
-            assertThat((result as Either.Right).r, contains(product2, product3,product1))
+            assertThat((result as Either.Right).r, contains(product4, product2, product3, product1))
         }
     }
 
@@ -53,6 +52,7 @@ class ProductRepositoryImplTest {
             given(productLocalSource.insertProducts(product1)).willReturn(1)
             given(productLocalSource.insertProducts(product2)).willReturn(2)
             given(productLocalSource.insertProducts(product3)).willReturn(3)
+            given(productLocalSource.insertProducts(product4)).willReturn(4)
 
             given(productRepository.getLocalProducts()).willReturn(listOf())
 
@@ -70,6 +70,7 @@ class ProductRepositoryImplTest {
             given(productLocalSource.insertProducts(product1)).willReturn(1)
             given(productLocalSource.insertProducts(product2)).willReturn(2)
             given(productLocalSource.insertProducts(product3)).willReturn(3)
+            given(productLocalSource.insertProducts(product4)).willReturn(4)
 
             given(productRepository.getLocalProducts()).willReturn(listOf(product1))
 
