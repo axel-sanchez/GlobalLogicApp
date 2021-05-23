@@ -25,7 +25,10 @@ class ProductRepositoryImpl(
 
         if (eitherRemoteProducts is Either.Right) {
             addProductsInDB(eitherRemoteProducts.r)
+            val sortedList = eitherRemoteProducts.r.sortedBy { it?.title }
+            return Either.Right(sortedList)
         }
+
         return eitherRemoteProducts
     }
 

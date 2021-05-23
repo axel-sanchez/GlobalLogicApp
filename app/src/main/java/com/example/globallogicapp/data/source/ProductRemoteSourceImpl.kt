@@ -24,8 +24,8 @@ class ProductRemoteSourceImpl(private val service: ApiServiceProduct) : ProductR
             if (response.isSuccessful) {
                 Log.i("Successful Response", response.body().toString())
 
-                response.body()?.let { lyric ->
-                    mutableLiveData.value = Either.Right(lyric)
+                response.body()?.let { products ->
+                    mutableLiveData.value = Either.Right(products)
                 } ?: kotlin.run {
                     mutableLiveData.value = Either.Left(API_ERROR)
                 }
