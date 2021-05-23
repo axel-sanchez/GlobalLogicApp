@@ -46,12 +46,7 @@ class ProductRepositoryImplTest {
     private val productLocalSource: ProductLocalSource = mock(ProductLocalSource::class.java)
 
     @Test
-    fun should_return_list_sorted() = runBlocking {
-        foo()
-    }
-
-    private suspend fun foo() {
-
+    fun should_return_list_sorted(): Unit = runBlocking {
         val productRepository: ProductRepository = ProductRepositoryImpl(productRemoteSource, productLocalSource)
 
         coroutineScope {
