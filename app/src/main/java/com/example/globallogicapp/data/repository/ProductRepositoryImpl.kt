@@ -16,13 +16,12 @@ class ProductRepositoryImpl(
 ) : ProductRepository {
     override suspend fun getAllProducts(): Either<Constants.ApiError, List<Product?>> {
 
-        val localProducts = productLocalSource.getAllProducts()
-
+        val localProducts = getLocalProducts()
         if (localProducts.isNotEmpty()) {
             return Either.Right(localProducts)
         }
 
-        val eitherRemoteProducts = productRemoteSource.getProducts().value ?: Either.Left(Constants.ApiError.API_ERROR)
+        val eitherRemoteProducts = getRemoteProducts()
 
         if (eitherRemoteProducts is Either.Right) {
             addProductsInDB(eitherRemoteProducts.r)
@@ -30,11 +29,19 @@ class ProductRepositoryImpl(
         return eitherRemoteProducts
     }
 
+    override suspend fun getLocalProducts(): List<Product?> {
+        return productLocalSource.getAllProducts()
+    }
+
+    override suspend fun getRemoteProducts(): Either<Constants.ApiError, List<Product?>> {
+        return productRemoteSource.getProducts().value ?: Either.Left(Constants.ApiError.API_ERROR)
+    }
+
     override suspend fun getProduct(idProduct: Long): Product? {
         return productLocalSource.getProduct(idProduct)
     }
 
-    private suspend fun addProductsInDB(result: List<Product?>) {
+    override suspend fun addProductsInDB(result: List<Product?>) {
         result.forEach { product ->
             product?.id = productLocalSource.insertProducts(product)
         }
