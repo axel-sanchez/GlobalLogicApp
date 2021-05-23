@@ -7,8 +7,6 @@ import com.example.globallogicapp.data.source.ProductRemoteSource
 import com.example.globallogicapp.domain.repository.ProductRepository
 import com.example.globallogicapp.helpers.Constants
 import com.example.globallogicapp.helpers.Either
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.contains
@@ -46,23 +44,21 @@ class ProductRepositoryImplTest {
     private val productLocalSource: ProductLocalSource = mock(ProductLocalSource::class.java)
 
     @Test
-    fun should_return_list_sorted(): Unit = runBlocking {
+    fun should_return_product_list_sorted_by_title() {
         val productRepository: ProductRepository = ProductRepositoryImpl(productRemoteSource, productLocalSource)
 
-        coroutineScope {
-            launch {
-                given(productRepository.getLocalProducts()).willReturn(listOf())
+        runBlocking {
+            given(productRepository.getLocalProducts()).willReturn(listOf())
 
-                val mutableListData = MutableLiveData(getListProducts())
-                given(productRemoteSource.getProducts()).willReturn(mutableListData)
+            val mutableListData = MutableLiveData(getListProducts())
+            given(productRemoteSource.getProducts()).willReturn(mutableListData)
 
-                given(productLocalSource.insertProducts(product1)).willReturn(1)
-                given(productLocalSource.insertProducts(product2)).willReturn(2)
-                given(productLocalSource.insertProducts(product3)).willReturn(3)
+            given(productLocalSource.insertProducts(product1)).willReturn(1)
+            given(productLocalSource.insertProducts(product2)).willReturn(2)
+            given(productLocalSource.insertProducts(product3)).willReturn(3)
 
-                val result = productRepository.getAllProducts()
-                assertThat((result as Either.Right).r, contains(product2, product3, product1))
-            }
+            val result = productRepository.getAllProducts()
+            assertThat((result as Either.Right).r, contains(product2, product3,product1))
         }
     }
 
