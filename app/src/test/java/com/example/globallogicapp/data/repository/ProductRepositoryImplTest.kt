@@ -5,11 +5,11 @@ import com.example.globallogicapp.data.source.ProductLocalSource
 import com.example.globallogicapp.data.source.ProductRemoteSource
 import com.example.globallogicapp.domain.repository.ProductRepository
 import com.example.globallogicapp.helpers.Either
-import com.example.globallogicapp.helpers.HelperTest.getListProducts
-import com.example.globallogicapp.helpers.HelperTest.product1
-import com.example.globallogicapp.helpers.HelperTest.product2
-import com.example.globallogicapp.helpers.HelperTest.product3
-import com.example.globallogicapp.helpers.HelperTest.product4
+import com.example.globallogicapp.helpers.DummyProducts.getListProducts
+import com.example.globallogicapp.helpers.DummyProducts.product1
+import com.example.globallogicapp.helpers.DummyProducts.product2
+import com.example.globallogicapp.helpers.DummyProducts.product3
+import com.example.globallogicapp.helpers.DummyProducts.product4
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.contains

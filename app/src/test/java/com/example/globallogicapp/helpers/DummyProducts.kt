@@ -2,7 +2,7 @@ package com.example.globallogicapp.helpers
 
 import com.example.globallogicapp.data.model.Product
 
-object HelperTest {
+object DummyProducts {
     val product1 = Product(
         1,
         "Description UNO",

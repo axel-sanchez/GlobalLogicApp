@@ -17,17 +17,17 @@ import com.example.globallogicapp.helpers.Either
 import com.example.globallogicapp.helpers.hide
 import com.example.globallogicapp.helpers.show
 import com.example.globallogicapp.ui.adapters.ProductAdapter
-import com.example.globallogicapp.viewmodel.ProductViewModel
+import com.example.globallogicapp.viewmodel.ProductsViewModel
 import org.koin.android.ext.android.inject
 
 /**
  * A fragment representing a list of Items.
  */
-class ProductFragment : Fragment() {
+class ProductsFragment : Fragment() {
 
     private val getAllProductsUseCase: GetAllProductsUseCase by inject()
-    private val viewModel: ProductViewModel by viewModels(
-        factoryProducer = { ProductViewModel.ProductViewModelFactory(getAllProductsUseCase) }
+    private val viewModel: ProductsViewModel by viewModels(
+        factoryProducer = { ProductsViewModel.ProductViewModelFactory(getAllProductsUseCase) }
     )
 
     private var fragmentProductBinding: FragmentProductBinding? = null

@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 /**
  * @author Axel Sanchez
  */
-class ProductViewModel(private val getAllProductsUseCase: GetAllProductsUseCase): ViewModel() {
+class ProductsViewModel(private val getAllProductsUseCase: GetAllProductsUseCase): ViewModel() {
 
     private val listData: MutableLiveData<Either<Constants.ApiError, List<Product?>>> by lazy {
         MutableLiveData<Either<Constants.ApiError, List<Product?>>>().also {
