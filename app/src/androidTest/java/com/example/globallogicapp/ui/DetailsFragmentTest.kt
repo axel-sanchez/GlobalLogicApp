@@ -26,7 +26,7 @@ class DetailsFragmentTest{
     )
 
     @Test
-    fun should_show_product_description() {
+    fun should_show_product_title_and_description() {
         val bundle = bundleOf("idProduct" to product.id)
         val scenario = launchFragmentInContainer<DetailsFragment>(
             fragmentArgs = bundle
