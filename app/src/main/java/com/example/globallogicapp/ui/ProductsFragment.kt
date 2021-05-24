@@ -13,6 +13,7 @@ import com.example.globallogicapp.R
 import com.example.globallogicapp.data.model.Product
 import com.example.globallogicapp.databinding.FragmentProductBinding
 import com.example.globallogicapp.domain.usecase.GetAllProductsUseCase
+import com.example.globallogicapp.helpers.Constants
 import com.example.globallogicapp.helpers.Either
 import com.example.globallogicapp.helpers.hide
 import com.example.globallogicapp.helpers.show
@@ -47,30 +48,34 @@ class ProductsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.getProductLiveData().observe(viewLifecycleOwner, { response ->
-            with(binding) {
-                response.fold(
-                    left = {
-                        emptyState.show()
-                        errorText.text = getString(R.string.error_api_products)
+            updateView(response)
+        })
+    }
+
+    fun updateView(response: Either<Constants.ApiError, List<Product?>>?) {
+        with(binding) {
+            response?.fold(
+                left = {
+                    emptyState.show()
+                    errorText.text = getString(R.string.error_api_products)
+                    list.hide()
+                }, right = {
+                    if ((response as Either.Right).r.isEmpty()) {
                         list.hide()
-                    }, right = {
-                        if ((response as Either.Right).r.isEmpty()) {
-                            list.hide()
-                            errorText.text = getString(R.string.there_is_not_products)
-                            emptyState.show()
-                        } else {
-                            list.show()
-                            with(list) {
-                                layoutManager = LinearLayoutManager(context)
-                                val listProducts = response.r
-                                adapter = ProductAdapter(listProducts) { itemClick(it) }
-                            }
+                        errorText.text = getString(R.string.there_is_not_products)
+                        emptyState.show()
+                    } else {
+                        list.show()
+                        with(list) {
+                            layoutManager = LinearLayoutManager(context)
+                            val listProducts = response.r
+                            adapter = ProductAdapter(listProducts) { itemClick(it) }
                         }
                     }
-                )
-                progress.hide()
-            }
-        })
+                }
+            )
+            progress.hide()
+        }
     }
 
     private fun itemClick(product: Product?) {
