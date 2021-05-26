@@ -52,7 +52,7 @@ class ProductsFragment : Fragment() {
         })
     }
 
-    fun updateView(response: Either<Constants.ApiError, List<Product?>>?) {
+    private fun updateView(response: Either<Constants.ApiError, List<Product?>>?) {
         with(binding) {
             response?.fold(
                 left = {
@@ -66,15 +66,18 @@ class ProductsFragment : Fragment() {
                         emptyState.show()
                     } else {
                         list.show()
-                        with(list) {
-                            layoutManager = LinearLayoutManager(context)
-                            val listProducts = response.r
-                            adapter = ProductAdapter(listProducts) { itemClick(it) }
-                        }
+                        setAdapter(response.r)
                     }
                 }
             )
             progress.hide()
+        }
+    }
+
+    private fun setAdapter(products: List<Product?>) {
+        with(binding.list) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = ProductAdapter(products) { itemClick(it) }
         }
     }
 
