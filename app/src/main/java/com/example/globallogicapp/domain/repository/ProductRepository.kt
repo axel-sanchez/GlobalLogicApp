@@ -9,5 +9,8 @@ import com.example.globallogicapp.helpers.Either
  */
 interface ProductRepository {
     suspend fun getAllProducts(): Either<Constants.ApiError, List<Product?>>
+    suspend fun getLocalProducts(): List<Product?>
+    suspend fun getRemoteProducts(): Either<Constants.ApiError, List<Product?>>
     suspend fun getProduct(idProduct: Long): Product?
+    suspend fun addProductsInDB(result: List<Product?>)
 }

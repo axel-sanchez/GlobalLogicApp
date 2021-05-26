@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
+import com.example.globallogicapp.data.model.Product
 import com.example.globallogicapp.databinding.FragmentDetailsBinding
 import com.example.globallogicapp.domain.usecase.GetProductUseCase
-import com.example.globallogicapp.ui.ProductFragment.Companion.ID_PRODUCT
+import com.example.globallogicapp.ui.ProductsFragment.Companion.ID_PRODUCT
 import com.example.globallogicapp.viewmodel.DetailsViewModel
 import org.koin.android.ext.android.inject
 
@@ -45,19 +46,23 @@ class DetailsFragment : Fragment() {
             viewModel.getProduct(idProduct)
 
             viewModel.getProductLiveData().observe(viewLifecycleOwner, { product ->
-                with(binding){
-                    product?.let {
-                        title.text = it.title
-                        description.text = it.description
-
-                        Glide
-                            .with(view)
-                            .load(it.image)
-                            .centerCrop()
-                            .into(imageView)
-                    }
-                }
+                updateView(product)
             })
+        }
+    }
+
+    fun updateView(product: Product?) {
+        with(binding){
+            product?.let {
+                title.text = it.title
+                description.text = it.description
+
+                Glide
+                    .with(requireView())
+                    .load(it.image)
+                    .centerCrop()
+                    .into(imageView)
+            }
         }
     }
 }
