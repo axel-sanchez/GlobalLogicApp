@@ -1,4 +1,4 @@
-package com.example.globallogicapp.ui
+package com.example.globallogicapp.presentation
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
@@ -10,7 +10,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.filters.LargeTest
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.example.globallogicapp.R
-import com.example.globallogicapp.ui.adapters.ProductAdapter
+import com.example.globallogicapp.presentation.adapters.ProductAdapter
 import org.hamcrest.Matchers.not
 import org.junit.Rule
 import org.junit.Test

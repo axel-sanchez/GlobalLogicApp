@@ -1,4 +1,4 @@
-package com.example.globallogicapp.ui.adapters
+package com.example.globallogicapp.presentation.adapters
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater

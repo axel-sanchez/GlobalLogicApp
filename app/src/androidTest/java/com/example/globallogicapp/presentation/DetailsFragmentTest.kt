@@ -1,4 +1,4 @@
-package com.example.globallogicapp.ui
+package com.example.globallogicapp.presentation
 
 import androidx.core.os.bundleOf
 import androidx.fragment.app.testing.launchFragmentInContainer

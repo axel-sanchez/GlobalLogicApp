@@ -1,4 +1,4 @@
-package com.example.globallogicapp.ui
+package com.example.globallogicapp.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,8 +11,8 @@ import com.example.globallogicapp.application.MyApplication
 import com.example.globallogicapp.data.model.Product
 import com.example.globallogicapp.databinding.FragmentDetailsBinding
 import com.example.globallogicapp.domain.usecase.GetProductUseCase
-import com.example.globallogicapp.ui.ProductsFragment.Companion.ID_PRODUCT
-import com.example.globallogicapp.viewmodel.DetailsViewModel
+import com.example.globallogicapp.presentation.ProductsFragment.Companion.ID_PRODUCT
+import com.example.globallogicapp.presentation.viewmodel.DetailsViewModel
 import javax.inject.Inject
 
 /**

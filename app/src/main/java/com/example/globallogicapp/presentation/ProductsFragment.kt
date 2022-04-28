@@ -1,4 +1,4 @@
-package com.example.globallogicapp.ui
+package com.example.globallogicapp.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,8 +18,8 @@ import com.example.globallogicapp.helpers.Constants
 import com.example.globallogicapp.helpers.Either
 import com.example.globallogicapp.helpers.hide
 import com.example.globallogicapp.helpers.show
-import com.example.globallogicapp.ui.adapters.ProductAdapter
-import com.example.globallogicapp.viewmodel.ProductsViewModel
+import com.example.globallogicapp.presentation.adapters.ProductAdapter
+import com.example.globallogicapp.presentation.viewmodel.ProductsViewModel
 import javax.inject.Inject
 
 /**

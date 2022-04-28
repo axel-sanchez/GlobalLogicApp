@@ -1,4 +1,4 @@
-package com.example.globallogicapp.viewmodel
+package com.example.globallogicapp.presentation.viewmodel
 
 import androidx.lifecycle.*
 import com.example.globallogicapp.data.model.Product
