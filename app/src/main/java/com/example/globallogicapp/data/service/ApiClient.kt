@@ -5,6 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 /**
  * @author Axel Sanchez
+ * utilizo el patron de diseño Builder
  */
 class ApiClient {
     data class Builder<T>(private var baseUrl: String = "",

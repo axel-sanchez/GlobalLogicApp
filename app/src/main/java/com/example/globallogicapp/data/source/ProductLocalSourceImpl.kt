@@ -2,6 +2,8 @@ package com.example.globallogicapp.data.source
 
 import com.example.globallogicapp.data.model.Product
 import com.example.globallogicapp.data.room.ProductDao
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * @author Axel Sanchez
@@ -12,7 +14,8 @@ interface ProductLocalSource {
     suspend fun insertProducts(product: Product?): Long
 }
 
-class ProductLocalSourceImpl(private val database: ProductDao): ProductLocalSource{
+@Singleton
+class ProductLocalSourceImpl @Inject constructor(private val database: ProductDao): ProductLocalSource{
     override suspend fun getAllProducts(): List<Product?> {
         return database.getAllProducts()
     }

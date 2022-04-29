@@ -7,6 +7,8 @@ import com.example.globallogicapp.data.service.ApiServiceProduct
 import com.example.globallogicapp.helpers.Constants
 import com.example.globallogicapp.helpers.Constants.ApiError.API_ERROR
 import com.example.globallogicapp.helpers.Either
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * @author Axel Sanchez
@@ -15,7 +17,8 @@ interface ProductRemoteSource {
     suspend fun getProducts(): MutableLiveData<Either<Constants.ApiError, List<Product?>>>
 }
 
-class ProductRemoteSourceImpl(private val service: ApiServiceProduct) : ProductRemoteSource {
+@Singleton
+class ProductRemoteSourceImpl @Inject constructor(private val service: ApiServiceProduct) : ProductRemoteSource {
     override suspend fun getProducts(): MutableLiveData<Either<Constants.ApiError, List<Product?>>> {
         val mutableLiveData = MutableLiveData<Either<Constants.ApiError, List<Product?>>>()
 

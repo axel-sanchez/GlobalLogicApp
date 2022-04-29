@@ -1,4 +1,4 @@
-package com.example.globallogicapp.ui
+package com.example.globallogicapp.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

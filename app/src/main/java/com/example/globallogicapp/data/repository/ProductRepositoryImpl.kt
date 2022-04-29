@@ -8,11 +8,14 @@ import com.example.globallogicapp.data.source.ProductRemoteSource
 import com.example.globallogicapp.domain.repository.ProductRepository
 import com.example.globallogicapp.helpers.Constants
 import com.example.globallogicapp.helpers.Either
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * @author Axel Sanchez
  */
-class ProductRepositoryImpl(
+@Singleton
+class ProductRepositoryImpl @Inject constructor(
     private val productRemoteSource: ProductRemoteSource,
     private val productLocalSource: ProductLocalSource
 ) : ProductRepository {

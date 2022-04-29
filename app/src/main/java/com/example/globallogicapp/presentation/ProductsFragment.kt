@@ -1,4 +1,4 @@
-package com.example.globallogicapp.ui
+package com.example.globallogicapp.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.globallogicapp.R
+import com.example.globallogicapp.application.MyApplication
 import com.example.globallogicapp.data.model.Product
 import com.example.globallogicapp.databinding.FragmentProductBinding
 import com.example.globallogicapp.domain.usecase.GetAllProductsUseCase
@@ -17,16 +18,22 @@ import com.example.globallogicapp.helpers.Constants
 import com.example.globallogicapp.helpers.Either
 import com.example.globallogicapp.helpers.hide
 import com.example.globallogicapp.helpers.show
-import com.example.globallogicapp.ui.adapters.ProductAdapter
-import com.example.globallogicapp.viewmodel.ProductsViewModel
-import org.koin.android.ext.android.inject
+import com.example.globallogicapp.presentation.adapters.ProductAdapter
+import com.example.globallogicapp.presentation.viewmodel.ProductsViewModel
+import javax.inject.Inject
 
 /**
  * A fragment representing a list of Items.
  */
 class ProductsFragment : Fragment() {
 
-    private val getAllProductsUseCase: GetAllProductsUseCase by inject()
+    @Inject lateinit var getAllProductsUseCase: GetAllProductsUseCase
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (requireActivity().application as MyApplication).component.inject(this)
+    }
+
     private val viewModel: ProductsViewModel by viewModels(
         factoryProducer = { ProductsViewModel.ProductViewModelFactory(getAllProductsUseCase) }
     )

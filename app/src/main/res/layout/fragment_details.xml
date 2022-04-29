@@ -7,7 +7,7 @@
     android:layout_marginEnd="20dp"
     android:scrollbars="none"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.DetailsFragment">
+    tools:context=".presentation.DetailsFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
