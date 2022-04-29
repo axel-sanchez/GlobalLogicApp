@@ -11,6 +11,7 @@ import com.example.globallogicapp.application.MyApplication
 import com.example.globallogicapp.data.model.Product
 import com.example.globallogicapp.databinding.FragmentDetailsBinding
 import com.example.globallogicapp.domain.usecase.GetProductUseCase
+import com.example.globallogicapp.helpers.load
 import com.example.globallogicapp.presentation.ProductsFragment.Companion.ID_PRODUCT
 import com.example.globallogicapp.presentation.viewmodel.DetailsViewModel
 import javax.inject.Inject
@@ -63,12 +64,7 @@ class DetailsFragment : Fragment() {
             product?.let {
                 title.text = it.title
                 description.text = it.description
-
-                Glide
-                    .with(requireView())
-                    .load(it.image)
-                    .centerCrop()
-                    .into(imageView)
+                imageView.load(it.image)
             }
         }
     }

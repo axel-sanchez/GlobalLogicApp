@@ -9,6 +9,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.globallogicapp.R
 import com.example.globallogicapp.data.model.Product
+import com.example.globallogicapp.helpers.load
 
 /**
  * @author Axel Sanchez
@@ -30,15 +31,8 @@ class ProductAdapter(
 
             with(holder){
                 title.text = product.title
-
-                Glide
-                    .with(itemView)
-                    .load(product.image)
-                    .centerCrop()
-                    .into(image)
-
+                imageView.load(product.image)
                 description.text = product.description
-
                 itemView.setOnClickListener { itemClick(product) }
             }
         }
@@ -47,7 +41,7 @@ class ProductAdapter(
     override fun getItemCount(): Int = values.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val image: ImageView = view.findViewById(R.id.image)
+        val imageView: ImageView = view.findViewById(R.id.image)
         val title: TextView = view.findViewById(R.id.title)
         val description: TextView = view.findViewById(R.id.littleDescription)
     }
