@@ -52,9 +52,9 @@ class DetailsFragment : Fragment() {
         idProduct?.let {
             viewModel.getProduct(idProduct)
 
-            viewModel.getProductLiveData().observe(viewLifecycleOwner, { product ->
+            viewModel.getProductLiveData().observe(viewLifecycleOwner) { product ->
                 updateView(product)
-            })
+            }
         }
     }
 

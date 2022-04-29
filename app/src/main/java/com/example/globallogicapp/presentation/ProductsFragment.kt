@@ -54,9 +54,9 @@ class ProductsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getProductLiveData().observe(viewLifecycleOwner, { response ->
+        viewModel.getProductLiveData().observe(viewLifecycleOwner) { response ->
             updateView(response)
-        })
+        }
     }
 
     private fun updateView(response: Either<Constants.ApiError, List<Product?>>?) {
