@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
  * utilizo el patron de diseño Builder
  */
 class ApiClient {
-    data class Builder<T>(private var baseUrl: String = "",
+    class Builder<T>(private var baseUrl: String = "",
             private var apiService: Class<T>? = null){
 
         fun setBaseUrl(baseUrl: String) = apply{ this.baseUrl = baseUrl }
