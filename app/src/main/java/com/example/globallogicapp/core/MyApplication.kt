@@ -1,4 +1,4 @@
-package com.example.globallogicapp.application
+package com.example.globallogicapp.core
 
 import android.app.Application
 import com.example.globallogicapp.di.component.ApplicationComponent

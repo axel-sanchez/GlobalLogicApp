@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.globallogicapp.R
-import com.example.globallogicapp.application.MyApplication
+import com.example.globallogicapp.core.MyApplication
 import com.example.globallogicapp.data.model.Product
 import com.example.globallogicapp.databinding.FragmentProductBinding
 import com.example.globallogicapp.domain.usecase.GetAllProductsUseCase

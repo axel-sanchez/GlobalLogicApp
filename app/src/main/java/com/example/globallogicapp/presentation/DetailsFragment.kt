@@ -6,8 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.bumptech.glide.Glide
-import com.example.globallogicapp.application.MyApplication
+import com.example.globallogicapp.core.MyApplication
 import com.example.globallogicapp.data.model.Product
 import com.example.globallogicapp.databinding.FragmentDetailsBinding
 import com.example.globallogicapp.domain.usecase.GetProductUseCase
