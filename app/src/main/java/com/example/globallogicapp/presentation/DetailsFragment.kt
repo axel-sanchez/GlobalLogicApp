@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.globallogicapp.R
 import com.example.globallogicapp.core.MyApplication
 import com.example.globallogicapp.data.model.Product
 import com.example.globallogicapp.databinding.FragmentDetailsBinding
@@ -22,6 +24,8 @@ class DetailsFragment : Fragment() {
 
     @Inject lateinit var getProductUseCase: GetProductUseCase
 
+    lateinit var binding : FragmentDetailsBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (requireActivity().application as MyApplication).component.inject(this)
@@ -31,40 +35,18 @@ class DetailsFragment : Fragment() {
         factoryProducer = { DetailsViewModel.DetailsViewModelFactory(getProductUseCase) }
     )
 
-    private var fragmentDetailsBinding: FragmentDetailsBinding? = null
-    private val binding get() = fragmentDetailsBinding!!
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_details, container,false)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        fragmentDetailsBinding = FragmentDetailsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        fragmentDetailsBinding = null
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
 
         val idProduct = arguments?.getLong(ID_PRODUCT)
 
         idProduct?.let {
             viewModel.getProduct(idProduct)
-
-            viewModel.getProductLiveData().observe(viewLifecycleOwner) { product ->
-                updateView(product)
-            }
         }
-    }
 
-    fun updateView(product: Product?) {
-        with(binding){
-            product?.let {
-                title.text = it.title
-                description.text = it.description
-                imageView.load(it.image)
-            }
-        }
+        return binding.root
     }
 }
