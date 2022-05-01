@@ -35,7 +35,7 @@ class DetailsFragment : Fragment() {
         factoryProducer = { DetailsViewModel.DetailsViewModelFactory(getProductUseCase) }
     )
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_details, container,false)
 
         binding.lifecycleOwner = this
