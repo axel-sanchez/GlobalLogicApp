@@ -1,7 +1,7 @@
 package com.example.globallogicapp.presentation.viewmodel
 
 import androidx.lifecycle.*
-import com.example.globallogicapp.data.model.ResultListProducts
+import com.example.globallogicapp.data.model.Product
 import com.example.globallogicapp.domain.usecase.GetAllProductsUseCase
 import kotlinx.coroutines.launch
 
@@ -10,9 +10,9 @@ import kotlinx.coroutines.launch
  */
 class ProductsViewModel(private val getAllProductsUseCase: GetAllProductsUseCase): ViewModel() {
 
-    private val listData: MutableLiveData<ResultListProducts> = MutableLiveData<ResultListProducts>()
+    private val listData: MutableLiveData<List<Product?>?> = MutableLiveData<List<Product?>?>()
 
-    private fun setListData(result: ResultListProducts) {
+    private fun setListData(result: List<Product?>?) {
         listData.postValue(result)
     }
 
@@ -22,7 +22,7 @@ class ProductsViewModel(private val getAllProductsUseCase: GetAllProductsUseCase
         }
     }
 
-    fun getProductLiveData(): LiveData<ResultListProducts> {
+    fun getProductLiveData(): LiveData<List<Product?>?> {
         return listData
     }
 

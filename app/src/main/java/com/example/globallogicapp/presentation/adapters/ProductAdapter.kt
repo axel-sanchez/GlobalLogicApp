@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.bumptech.glide.Glide
 import com.example.globallogicapp.R
 import com.example.globallogicapp.data.model.Product
-import com.example.globallogicapp.helpers.load
+import com.example.globallogicapp.helpers.loadImage
 
 /**
  * @author Axel Sanchez
@@ -31,7 +30,7 @@ class ProductAdapter(
 
             with(holder){
                 title.text = product.title
-                imageView.load(product.image)
+                imageView.loadImage(product.image)
                 description.text = product.description
                 itemView.setOnClickListener { itemClick(product) }
             }

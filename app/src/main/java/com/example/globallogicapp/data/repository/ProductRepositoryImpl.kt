@@ -3,11 +3,9 @@ package com.example.globallogicapp.data.repository
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.globallogicapp.data.model.Product
-import com.example.globallogicapp.data.model.ResultListProducts
 import com.example.globallogicapp.data.source.ProductLocalSource
 import com.example.globallogicapp.data.source.ProductRemoteSource
 import com.example.globallogicapp.domain.repository.ProductRepository
-import com.example.globallogicapp.helpers.Constants.Error.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,35 +18,35 @@ class ProductRepositoryImpl @Inject constructor(
     private val productLocalSource: ProductLocalSource
 ) : ProductRepository {
     @RequiresApi(Build.VERSION_CODES.N)
-    override suspend fun getAllProducts(): ResultListProducts {
+    override suspend fun getAllProducts(): List<Product?>? {
 
         val localProducts = getLocalProducts()
         if (localProducts.isNotEmpty()) {
-            return ResultListProducts(localProducts, NoError)
+            return localProducts
         }
 
-        val resultRemoteProducts = getRemoteProducts()
+        var remoteProducts = getRemoteProducts()
 
-        if (resultRemoteProducts.error is NoError) {
-            addProductsInDB(resultRemoteProducts.listProducts)
-            val sortedList = resultRemoteProducts.listProducts?.sortedWith(
+        if (remoteProducts?.isNotEmpty() == true) {
+            addProductsInDB(remoteProducts)
+            val sortedList = remoteProducts.sortedWith(
                 compareBy(
                     { it?.title?.substringBeforeLast(" ") }, { it?.title?.substringAfterLast(" ")?.toInt() }
                 )
             )
-            resultRemoteProducts.listProducts = sortedList
-            return resultRemoteProducts
+            remoteProducts = sortedList
+            return remoteProducts
         }
 
-        return resultRemoteProducts
+        return remoteProducts
     }
 
     override suspend fun getLocalProducts(): List<Product?> {
         return productLocalSource.getAllProducts()
     }
 
-    override suspend fun getRemoteProducts(): ResultListProducts {
-        return productRemoteSource.getProducts().value ?: ResultListProducts(null, UnknownError())
+    override suspend fun getRemoteProducts(): List<Product?>? {
+        return productRemoteSource.getProducts().value
     }
 
     override suspend fun getProduct(idProduct: Long): Product? {

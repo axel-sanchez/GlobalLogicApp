@@ -2,11 +2,8 @@ package com.example.globallogicapp.data.source
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.example.globallogicapp.data.model.ResultListProducts
+import com.example.globallogicapp.data.model.Product
 import com.example.globallogicapp.data.service.ApiServiceProduct
-import com.example.globallogicapp.helpers.Constants.Error
-import com.example.globallogicapp.helpers.Constants.Error.*
-import java.lang.NullPointerException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,13 +11,13 @@ import javax.inject.Singleton
  * @author Axel Sanchez
  */
 interface ProductRemoteSource {
-    suspend fun getProducts(): MutableLiveData<ResultListProducts>
+    suspend fun getProducts(): MutableLiveData<List<Product?>?>
 }
 
 @Singleton
 class ProductRemoteSourceImpl @Inject constructor(private val service: ApiServiceProduct) : ProductRemoteSource {
-    override suspend fun getProducts(): MutableLiveData<ResultListProducts> {
-        val mutableLiveData = MutableLiveData<ResultListProducts>()
+    override suspend fun getProducts(): MutableLiveData<List<Product?>?> {
+        val mutableLiveData = MutableLiveData<List<Product?>?>()
 
         try {
             val response = service.getProducts()
@@ -28,16 +25,16 @@ class ProductRemoteSourceImpl @Inject constructor(private val service: ApiServic
                 Log.i("Successful Response", response.body().toString())
 
                 response.body()?.let { products ->
-                    mutableLiveData.value = ResultListProducts(products, NoError)
+                    mutableLiveData.value = products
                 } ?: kotlin.run {
-                    mutableLiveData.value = ResultListProducts(null, UnknownError())
+                    mutableLiveData.value = null
                 }
             } else {
                 Log.i("Error Response", response.errorBody().toString())
-                mutableLiveData.value = ResultListProducts(null, ApiError(response.message()))
+                mutableLiveData.value = null
             }
         } catch (e: Exception) {
-            mutableLiveData.value = ResultListProducts(null, AppError(e.message?:"Error al obtener los productos"))
+            mutableLiveData.value = null
             Log.e("ProductRemoteSourceImpl", e.message?:"Error al obtener los productos")
             e.printStackTrace()
         }

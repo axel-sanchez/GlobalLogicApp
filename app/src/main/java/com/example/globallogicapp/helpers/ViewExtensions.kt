@@ -2,6 +2,7 @@ package com.example.globallogicapp.helpers
 
 import android.view.View
 import android.widget.ImageView
+import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 
 /**
@@ -15,10 +16,11 @@ fun View.hide(){
     this.visibility = View.GONE
 }
 
-fun ImageView.load(url: String?){
+@BindingAdapter("loadImage")
+fun ImageView.loadImage(imageUrl: String?) {
     Glide
         .with(this.context)
-        .load(url)
+        .load(imageUrl)
         .centerCrop()
         .into(this)
 }
