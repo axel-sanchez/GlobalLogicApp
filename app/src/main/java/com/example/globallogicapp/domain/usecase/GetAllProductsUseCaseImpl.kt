@@ -1,9 +1,7 @@
 package com.example.globallogicapp.domain.usecase
 
-import com.example.globallogicapp.data.model.Product
+import com.example.globallogicapp.data.model.ResultListProducts
 import com.example.globallogicapp.domain.repository.ProductRepository
-import com.example.globallogicapp.helpers.Constants
-import com.example.globallogicapp.helpers.Either
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -11,12 +9,12 @@ import javax.inject.Singleton
  * @author Axel Sanchez
  */
 interface GetAllProductsUseCase{
-    suspend fun call(): Either<Constants.ApiError, List<Product?>>
+    suspend fun call(): ResultListProducts
 }
 
 @Singleton
 class GetAllProductsUseCaseImpl @Inject constructor(private val repository: ProductRepository): GetAllProductsUseCase {
-    override suspend fun call(): Either<Constants.ApiError, List<Product?>> {
+    override suspend fun call(): ResultListProducts {
         return repository.getAllProducts()
     }
 }

@@ -1,10 +1,8 @@
 package com.example.globallogicapp.presentation.viewmodel
 
 import androidx.lifecycle.*
-import com.example.globallogicapp.data.model.Product
+import com.example.globallogicapp.data.model.ResultListProducts
 import com.example.globallogicapp.domain.usecase.GetAllProductsUseCase
-import com.example.globallogicapp.helpers.Constants
-import com.example.globallogicapp.helpers.Either
 import kotlinx.coroutines.launch
 
 /**
@@ -12,23 +10,19 @@ import kotlinx.coroutines.launch
  */
 class ProductsViewModel(private val getAllProductsUseCase: GetAllProductsUseCase): ViewModel() {
 
-    private val listData: MutableLiveData<Either<Constants.ApiError, List<Product?>>> by lazy {
-        MutableLiveData<Either<Constants.ApiError, List<Product?>>>().also {
-            getProduct()
-        }
-    }
+    private val listData: MutableLiveData<ResultListProducts> = MutableLiveData<ResultListProducts>()
 
-    private fun setListData(result: Either<Constants.ApiError, List<Product?>>) {
+    private fun setListData(result: ResultListProducts) {
         listData.postValue(result)
     }
 
-    private fun getProduct() {
+    fun getProducts() {
         viewModelScope.launch {
             setListData(getAllProductsUseCase.call())
         }
     }
 
-    fun getProductLiveData(): LiveData<Either<Constants.ApiError, List<Product?>>> {
+    fun getProductLiveData(): LiveData<ResultListProducts> {
         return listData
     }
 

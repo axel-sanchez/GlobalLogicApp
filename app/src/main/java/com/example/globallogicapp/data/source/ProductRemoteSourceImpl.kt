@@ -2,11 +2,11 @@ package com.example.globallogicapp.data.source
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.example.globallogicapp.data.model.Product
+import com.example.globallogicapp.data.model.ResultListProducts
 import com.example.globallogicapp.data.service.ApiServiceProduct
-import com.example.globallogicapp.helpers.Constants
-import com.example.globallogicapp.helpers.Constants.ApiError.API_ERROR
-import com.example.globallogicapp.helpers.Either
+import com.example.globallogicapp.helpers.Constants.Error
+import com.example.globallogicapp.helpers.Constants.Error.*
+import java.lang.NullPointerException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,13 +14,13 @@ import javax.inject.Singleton
  * @author Axel Sanchez
  */
 interface ProductRemoteSource {
-    suspend fun getProducts(): MutableLiveData<Either<Constants.ApiError, List<Product?>>>
+    suspend fun getProducts(): MutableLiveData<ResultListProducts>
 }
 
 @Singleton
 class ProductRemoteSourceImpl @Inject constructor(private val service: ApiServiceProduct) : ProductRemoteSource {
-    override suspend fun getProducts(): MutableLiveData<Either<Constants.ApiError, List<Product?>>> {
-        val mutableLiveData = MutableLiveData<Either<Constants.ApiError, List<Product?>>>()
+    override suspend fun getProducts(): MutableLiveData<ResultListProducts> {
+        val mutableLiveData = MutableLiveData<ResultListProducts>()
 
         try {
             val response = service.getProducts()
@@ -28,22 +28,17 @@ class ProductRemoteSourceImpl @Inject constructor(private val service: ApiServic
                 Log.i("Successful Response", response.body().toString())
 
                 response.body()?.let { products ->
-                    mutableLiveData.value = Either.Right(products)
+                    mutableLiveData.value = ResultListProducts(products, NoError)
                 } ?: kotlin.run {
-                    mutableLiveData.value = Either.Left(API_ERROR)
+                    mutableLiveData.value = ResultListProducts(null, UnknownError())
                 }
             } else {
                 Log.i("Error Response", response.errorBody().toString())
-                val apiError = API_ERROR
-                apiError.error = response.message()
-                mutableLiveData.value = Either.Left(apiError)
+                mutableLiveData.value = ResultListProducts(null, ApiError(response.message()))
             }
         } catch (e: Exception) {
-            mutableLiveData.value = Either.Left(API_ERROR)
-            Log.e(
-                "ProductRemoteSourceImpl",
-                e.message?:"Error al obtener los productos"
-            )
+            mutableLiveData.value = ResultListProducts(null, AppError(e.message?:"Error al obtener los productos"))
+            Log.e("ProductRemoteSourceImpl", e.message?:"Error al obtener los productos")
             e.printStackTrace()
         }
 

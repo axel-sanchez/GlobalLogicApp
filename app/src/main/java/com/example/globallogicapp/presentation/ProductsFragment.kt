@@ -4,21 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.globallogicapp.R
 import com.example.globallogicapp.core.MyApplication
-import com.example.globallogicapp.data.model.Product
 import com.example.globallogicapp.databinding.FragmentProductBinding
 import com.example.globallogicapp.domain.usecase.GetAllProductsUseCase
-import com.example.globallogicapp.helpers.Constants
-import com.example.globallogicapp.helpers.Either
-import com.example.globallogicapp.helpers.hide
-import com.example.globallogicapp.helpers.show
-import com.example.globallogicapp.presentation.adapters.ProductAdapter
 import com.example.globallogicapp.presentation.viewmodel.ProductsViewModel
 import javax.inject.Inject
 
@@ -29,6 +21,8 @@ class ProductsFragment : Fragment() {
 
     @Inject lateinit var getAllProductsUseCase: GetAllProductsUseCase
 
+    lateinit var binding : FragmentProductBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (requireActivity().application as MyApplication).component.inject(this)
@@ -38,61 +32,15 @@ class ProductsFragment : Fragment() {
         factoryProducer = { ProductsViewModel.ProductViewModelFactory(getAllProductsUseCase) }
     )
 
-    private var fragmentProductBinding: FragmentProductBinding? = null
-    private val binding get() = fragmentProductBinding!!
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        fragmentProductBinding = FragmentProductBinding.inflate(inflater, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_product, container,false)
+
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+
+        viewModel.getProducts()
+
         return binding.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        fragmentProductBinding = null
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        viewModel.getProductLiveData().observe(viewLifecycleOwner) { response ->
-            updateView(response)
-        }
-    }
-
-    private fun updateView(response: Either<Constants.ApiError, List<Product?>>?) {
-        with(binding) {
-            response?.fold(
-                left = {
-                    emptyState.show()
-                    errorText.text = getString(R.string.error_api_products)
-                    list.hide()
-                }, right = {
-                    if ((response as Either.Right).r.isEmpty()) {
-                        list.hide()
-                        errorText.text = getString(R.string.there_is_not_products)
-                        emptyState.show()
-                    } else {
-                        list.show()
-                        setAdapter(response.r)
-                    }
-                }
-            )
-            progress.hide()
-        }
-    }
-
-    private fun setAdapter(products: List<Product?>) {
-        with(binding.list) {
-            layoutManager = LinearLayoutManager(context)
-            adapter = ProductAdapter(products) { itemClick(it) }
-        }
-    }
-
-    private fun itemClick(product: Product?) {
-        val bundle = bundleOf(
-            ID_PRODUCT to product?.id
-        )
-        findNavController().navigate(R.id.action_productFragment_to_blankFragment, bundle)
     }
 
     companion object {

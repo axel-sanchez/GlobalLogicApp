@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import com.example.globallogicapp.data.source.ProductLocalSource
 import com.example.globallogicapp.data.source.ProductRemoteSource
 import com.example.globallogicapp.domain.repository.ProductRepository
-import com.example.globallogicapp.helpers.Either
 import com.example.globallogicapp.helpers.DummyProducts.getListProducts
 import com.example.globallogicapp.helpers.DummyProducts.product1
 import com.example.globallogicapp.helpers.DummyProducts.product2
